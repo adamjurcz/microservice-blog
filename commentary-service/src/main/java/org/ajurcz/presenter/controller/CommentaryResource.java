@@ -1,6 +1,5 @@
 package org.ajurcz.presenter.controller;
 
-import org.ajurcz.core.domain.Event;
 import org.ajurcz.presenter.requests.CommentaryRequest;
 
 import org.ajurcz.presenter.responses.CommentaryCreateResponse;

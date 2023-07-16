@@ -13,6 +13,6 @@ public interface QueryResource {
     @PostMapping
     ResponseEntity<Void> eventHandler(@RequestBody Event event);
 
-    @GetMapping
-    ResponseEntity<PostGetAllResponse> getPosts();
+    @GetMapping("/posts")
+    ResponseEntity<PostGetAllResponse> getAllPosts();
 }

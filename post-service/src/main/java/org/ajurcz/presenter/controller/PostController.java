@@ -1,7 +1,8 @@
 package org.ajurcz.presenter.controller;
 
 import org.ajurcz.core.domain.Post;
-import org.ajurcz.core.service.PostService;
+
+import org.ajurcz.core.usecase.CreatePostUseCase;
 import org.ajurcz.presenter.requests.PostRequest;
 import org.ajurcz.presenter.responses.PostCreateResponse;
 
@@ -11,31 +12,20 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PostController implements PostResource{
-    private final PostService postService;
+    private final CreatePostUseCase createPostUseCase;
 
-    public PostController(PostService postService) {
-        this.postService = postService;
+    public PostController(CreatePostUseCase createPostUseCase) {
+        this.createPostUseCase = createPostUseCase;
     }
-
-    /*
-    @Override
-    public ResponseEntity<AllPostsGetResponse> getPosts() {
-        AllPostsGetResponse response = new AllPostsGetResponse(postService.getPosts());
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<PostGetResponse> getPost(Integer postId) {
-        PostGetResponse response = new PostGetResponse(postService.getPost(postId));
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-     */
 
     @Override
     public ResponseEntity<PostCreateResponse> createPost(PostRequest postRequest) {
-        Post post = postService.createPost(postRequest);
-        PostCreateResponse response = new PostCreateResponse(post.getId(), post.getCreatorName(), post.getContent());
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        Post post = createPostUseCase
+                .execute(new CreatePostUseCase.Input(postRequest.creatorName(), postRequest.content()))
+                .getPost();
+
+        return new ResponseEntity<>(
+                new PostCreateResponse(post.getId(), post.getCreatorName(), post.getContent()),
+                HttpStatus.CREATED);
     }
 }

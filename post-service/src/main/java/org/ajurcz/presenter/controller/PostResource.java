@@ -11,13 +11,6 @@ import org.springframework.web.bind.annotation.*;
 public interface PostResource {
     String BASE_URL = "/api/v1/posts";
 
-    /*
-    @GetMapping
-    ResponseEntity<AllPostsGetResponse> getPosts();
-
-    @GetMapping("/{postId}")
-    ResponseEntity<PostGetResponse> getPost(@PathVariable Integer postId);
-    */
     @PostMapping
     ResponseEntity<PostCreateResponse> createPost(@RequestBody PostRequest postRequest);
 

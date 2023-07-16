@@ -2,14 +2,18 @@ package org.ajurcz.presenter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.ajurcz.core.domain.CommentDto;
 import org.ajurcz.core.domain.Event;
+import org.ajurcz.core.domain.Post;
 import org.ajurcz.core.domain.PostDto;
+import org.ajurcz.core.usecase.GetAllPostsUseCase;
+import org.ajurcz.core.usecase.HandleCommentEventUseCase;
+import org.ajurcz.core.usecase.HandlePostEventUseCase;
 import org.ajurcz.presenter.response.PostGetAllResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -17,10 +21,20 @@ public class QueryController implements QueryResource{
 
     private final ObjectMapper objectMapper;
 
-    List<PostDto> postDtos = new ArrayList<>();
+    private final HandleCommentEventUseCase handleCommentEventUseCase;
 
-    public QueryController(ObjectMapper objectMapper) {
+    private final HandlePostEventUseCase handlePostEventUseCase;
+
+    private final GetAllPostsUseCase getAllPostsUseCase;
+
+    public QueryController(ObjectMapper objectMapper,
+                           HandleCommentEventUseCase handleCommentEventUseCase,
+                           HandlePostEventUseCase handlePostEventUseCase,
+                           GetAllPostsUseCase getAllPostsUseCase) {
         this.objectMapper = objectMapper;
+        this.handleCommentEventUseCase = handleCommentEventUseCase;
+        this.handlePostEventUseCase = handlePostEventUseCase;
+        this.getAllPostsUseCase = getAllPostsUseCase;
     }
 
     @Override
@@ -29,7 +43,12 @@ public class QueryController implements QueryResource{
             Class<?> clazz = Class.forName(event.getClassName());
             Object object = objectMapper.convertValue(event.getObject(), clazz);
             if(object instanceof PostDto postDto){
-                postDtos.add(postDto);
+                handlePostEventUseCase.execute(new HandlePostEventUseCase.Input(postDto.getId(),
+                        postDto.getCreatorName(), postDto.getContent()));
+            }
+            if(object instanceof CommentDto commentDto){
+                handleCommentEventUseCase.execute(new HandleCommentEventUseCase.Input(commentDto.getId(),
+                        commentDto.getContent(), commentDto.getPostId()));
             }
         }
         catch (ClassNotFoundException e){
@@ -39,7 +58,9 @@ public class QueryController implements QueryResource{
     }
 
     @Override
-    public ResponseEntity<PostGetAllResponse> getPosts() {
-        return new ResponseEntity<>(new PostGetAllResponse(postDtos), HttpStatus.OK);
+    public ResponseEntity<PostGetAllResponse> getAllPosts() {
+        List<Post> posts = getAllPostsUseCase.execute(new GetAllPostsUseCase.Input())
+                .getPosts();
+        return new ResponseEntity<>(new PostGetAllResponse(posts),HttpStatus.OK);
     }
 }
