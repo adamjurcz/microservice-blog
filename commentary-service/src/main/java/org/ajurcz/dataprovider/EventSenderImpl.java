@@ -18,12 +18,11 @@ public class EventSenderImpl <T> implements EventSender <T> {
     }
 
     @Override
-    public boolean sendEvent(T dto) {
+    public void sendEvent(T dto) {
         Event event = new Event(dto.getClass().getName(), dto);
         HttpEntity<Event> request = new HttpEntity<>(event);
         String orchestratorUrl = "http://localhost:8083/api/v1/events";
-        ResponseEntity<Void> response =  restTemplate
+        restTemplate
                 .exchange(orchestratorUrl, HttpMethod.POST, request, Void.class);
-        return response.getStatusCode() == HttpStatus.OK;
     }
 }

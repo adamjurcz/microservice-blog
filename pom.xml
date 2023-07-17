@@ -20,6 +20,7 @@
         <module>post-service</module>
         <module>query-service</module>
         <module>event-service</module>
+        <module>verify-comment-service</module>
     </modules>
 
     <properties>

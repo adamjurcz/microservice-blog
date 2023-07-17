@@ -17,11 +17,6 @@ public class CommentaryRepositoryImpl implements CommentaryRepository {
     }
 
     @Override
-    public List<Commentary> getAllCommentaries() {
-        return commentaries;
-    }
-
-    @Override
     public Commentary persistComment(String content, Integer postId) {
         Integer newCommentaryId;
         if(!commentaries.isEmpty()){
