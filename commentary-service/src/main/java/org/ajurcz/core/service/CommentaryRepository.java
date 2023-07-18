@@ -2,9 +2,9 @@ package org.ajurcz.core.service;
 
 import org.ajurcz.core.domain.Commentary;
 
-import java.util.List;
-
 public interface CommentaryRepository {
 
-    Commentary persistComment(String content, Integer postId);
+    Commentary persistComment(String content, Integer postId, boolean isValid);
+
+    Commentary updateComment(Integer id, String content, Integer postId, boolean isValid);
 }

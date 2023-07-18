@@ -1,17 +1,19 @@
 package org.ajurcz.core.domain;
 
-public class CommentDto {
+public class CommentVerifiedDto {
     private Integer id;
     private String content;
     private Integer postId;
+    private boolean isValid;
 
-    public CommentDto(Integer id, String content, Integer postId) {
+    public CommentVerifiedDto(Integer id, String content, Integer postId, boolean isValid) {
         this.id = id;
         this.content = content;
         this.postId = postId;
+        this.isValid = isValid;
     }
 
-    public CommentDto() {
+    public CommentVerifiedDto() {
     }
 
     public Integer getId() {
@@ -38,4 +40,11 @@ public class CommentDto {
         this.postId = postId;
     }
 
+    public boolean isValid() {
+        return isValid;
+    }
+
+    public void setValid(boolean valid) {
+        isValid = valid;
+    }
 }

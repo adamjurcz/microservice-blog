@@ -2,10 +2,7 @@ package org.ajurcz.presenter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.ajurcz.core.domain.CommentDto;
-import org.ajurcz.core.domain.Event;
-import org.ajurcz.core.domain.Post;
-import org.ajurcz.core.domain.PostDto;
+import org.ajurcz.core.domain.*;
 import org.ajurcz.core.usecase.GetAllPostsUseCase;
 import org.ajurcz.core.usecase.HandleCommentEventUseCase;
 import org.ajurcz.core.usecase.HandlePostEventUseCase;
@@ -46,9 +43,9 @@ public class QueryController implements QueryResource{
                 handlePostEventUseCase.execute(new HandlePostEventUseCase.Input(postDto.getId(),
                         postDto.getCreatorName(), postDto.getContent()));
             }
-            if(object instanceof CommentDto commentDto){
+            if(object instanceof CommentVerifiedDto commentDto){
                 handleCommentEventUseCase.execute(new HandleCommentEventUseCase.Input(commentDto.getId(),
-                        commentDto.getContent(), commentDto.getPostId()));
+                        commentDto.getContent(), commentDto.getPostId(), commentDto.isValid()));
             }
         }
         catch (ClassNotFoundException e){

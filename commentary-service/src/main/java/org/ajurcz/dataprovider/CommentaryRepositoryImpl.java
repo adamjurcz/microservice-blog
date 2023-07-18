@@ -17,7 +17,7 @@ public class CommentaryRepositoryImpl implements CommentaryRepository {
     }
 
     @Override
-    public Commentary persistComment(String content, Integer postId) {
+    public Commentary persistComment(String content, Integer postId, boolean isValid) {
         Integer newCommentaryId;
         if(!commentaries.isEmpty()){
             newCommentaryId = commentaries.stream().max(Comparator.comparing(Commentary::getId)).get().getId() + 1;
@@ -26,9 +26,19 @@ public class CommentaryRepositoryImpl implements CommentaryRepository {
             newCommentaryId = 0;
         }
 
-        Commentary commentary = new Commentary(newCommentaryId, content, postId);
+        Commentary commentary = new Commentary(newCommentaryId, content, postId, isValid);
 
         commentaries.add(commentary);
         return commentary;
     }
+
+    @Override
+    public Commentary updateComment(Integer id, String content, Integer postId, boolean isValid){
+        commentaries.removeIf(object -> object.getId().equals(id));
+
+        Commentary commentary = new Commentary(id, content, postId, isValid);
+        commentaries.add(commentary);
+        return commentary;
+    }
+
 }

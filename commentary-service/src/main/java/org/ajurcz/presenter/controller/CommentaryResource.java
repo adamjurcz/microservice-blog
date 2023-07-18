@@ -1,5 +1,6 @@
 package org.ajurcz.presenter.controller;
 
+import org.ajurcz.core.domain.Event;
 import org.ajurcz.presenter.requests.CommentaryRequest;
 
 import org.ajurcz.presenter.responses.CommentaryCreateResponse;
@@ -14,4 +15,7 @@ public interface CommentaryResource {
     @PostMapping("/{postId}")
     ResponseEntity<CommentaryCreateResponse> createCommentary(@PathVariable Integer postId,
                                                               @RequestBody CommentaryRequest commentaryRequest);
+
+    @PostMapping
+    ResponseEntity<Void> eventHandler(@RequestBody Event event);
 }

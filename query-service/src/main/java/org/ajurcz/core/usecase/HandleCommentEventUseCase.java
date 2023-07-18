@@ -18,7 +18,7 @@ public class HandleCommentEventUseCase extends UseCase<HandleCommentEventUseCase
     @Override
     public Output execute(Input input) {
         Optional<Post> post = postRepository.getPost(input.postId);
-        post.ifPresent(value -> value.addCommentary(new Commentary(input.id, input.content, input.postId)));
+        post.ifPresent(value -> value.addCommentary(new Commentary(input.id, input.content, input.postId, input.isValid)));
 
         return new Output();
     }
@@ -28,6 +28,7 @@ public class HandleCommentEventUseCase extends UseCase<HandleCommentEventUseCase
         Integer id;
         String content;
         Integer postId;
+        boolean isValid;
     }
 
     @Value

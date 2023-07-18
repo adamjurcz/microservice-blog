@@ -4,21 +4,22 @@ import lombok.Value;
 import org.ajurcz.core.domain.Commentary;
 import org.ajurcz.core.service.CommentaryRepository;
 
-public class CreateCommentaryUseCase extends UseCase<CreateCommentaryUseCase.Input, CreateCommentaryUseCase.Output>{
+public class UpdateCommentaryUseCase extends UseCase<UpdateCommentaryUseCase.Input, UpdateCommentaryUseCase.Output>{
     private final CommentaryRepository commentaryRepository;
 
-    public CreateCommentaryUseCase(CommentaryRepository commentaryRepository) {
+    public UpdateCommentaryUseCase(CommentaryRepository commentaryRepository) {
         this.commentaryRepository = commentaryRepository;
     }
 
     @Override
     public Output execute(Input input) {
-        Commentary commentary = commentaryRepository.persistComment(input.content, input.postId, input.isValid);
+        Commentary commentary = commentaryRepository.updateComment(input.id, input.content, input.postId, input.isValid);
         return new Output(commentary);
     }
 
     @Value
     public static class Input implements UseCase.Input{
+        Integer id;
         String content;
         Integer postId;
         boolean isValid;
