@@ -4,13 +4,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.ajurcz.core.domain.CommentDto;
 import org.ajurcz.core.domain.CommentVerifiedDto;
 import org.ajurcz.core.domain.Event;
-import org.ajurcz.core.domain.PostDto;
+import org.ajurcz.core.usecase.AddToEventStoreUseCase;
+import org.ajurcz.core.usecase.GetEventsFromEventStoreUseCase;
+import org.ajurcz.presenter.response.GetFromEventStoreResponse;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 @Component
 public class EventController implements EventResource{
@@ -19,15 +23,25 @@ public class EventController implements EventResource{
 
     private final ObjectMapper objectMapper;
 
-    public EventController(RestTemplate restTemplate, ObjectMapper objectMapper) {
+    private final AddToEventStoreUseCase addToEventStoreUseCase;
+
+    private final GetEventsFromEventStoreUseCase getEventsFromEventStoreUseCase;
+
+
+    public EventController(RestTemplate restTemplate, ObjectMapper objectMapper,
+                           AddToEventStoreUseCase addToEventStoreUseCase, GetEventsFromEventStoreUseCase getEventsFromEventStoreUseCase) {
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
+        this.addToEventStoreUseCase = addToEventStoreUseCase;
+        this.getEventsFromEventStoreUseCase = getEventsFromEventStoreUseCase;
     }
 
     @Override
     public ResponseEntity<Void> createEvent(Event event) {
-        HttpEntity<Event> request = new HttpEntity<>(event);
+        addToEventStoreUseCase.execute(new AddToEventStoreUseCase.Input(event));
+
         try {
+            HttpEntity<Event> request = new HttpEntity<>(event);
             Class<?> clazz = Class.forName(event.getClassName());
             Object object = objectMapper.convertValue(event.getObject(), clazz);
             if (object instanceof CommentDto) {
@@ -49,5 +63,12 @@ public class EventController implements EventResource{
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<GetFromEventStoreResponse> getAllEvents(){
+        List<Event> events = getEventsFromEventStoreUseCase.execute(new GetEventsFromEventStoreUseCase.Input()).getEvents();
+        GetFromEventStoreResponse getFromEventStoreResponse = new GetFromEventStoreResponse(events);
+        return new ResponseEntity<>(getFromEventStoreResponse, HttpStatus.OK);
     }
 }

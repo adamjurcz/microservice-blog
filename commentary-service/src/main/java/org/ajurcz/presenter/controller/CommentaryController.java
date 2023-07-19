@@ -1,13 +1,11 @@
 package org.ajurcz.presenter.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.ajurcz.core.domain.CommentDto;
-import org.ajurcz.core.domain.CommentVerifiedDto;
 import org.ajurcz.core.domain.Commentary;
 import org.ajurcz.core.domain.Event;
 import org.ajurcz.core.service.EventSender;
 import org.ajurcz.core.usecase.CreateCommentaryUseCase;
-import org.ajurcz.core.usecase.UpdateCommentaryUseCase;
+import org.ajurcz.core.usecase.HandleEventUseCase;
 import org.ajurcz.presenter.requests.CommentaryRequest;
 import org.ajurcz.presenter.responses.CommentaryCreateResponse;
 import org.springframework.http.HttpStatus;
@@ -19,17 +17,15 @@ public class CommentaryController implements CommentaryResource{
 
     private final CreateCommentaryUseCase createCommentaryUseCase;
 
-    private final UpdateCommentaryUseCase updateCommentaryUseCase;
-
-    private final ObjectMapper objectMapper;
+    private final HandleEventUseCase handleEventUseCase;
 
     private final EventSender<CommentDto> eventSender;
 
     public CommentaryController(CreateCommentaryUseCase createCommentaryUseCase,
-                                UpdateCommentaryUseCase updateCommentaryUseCase, ObjectMapper objectMapper, EventSender<CommentDto>eventSender) {
+                                HandleEventUseCase handleEventUseCase,
+                                EventSender<CommentDto>eventSender) {
         this.createCommentaryUseCase = createCommentaryUseCase;
-        this.updateCommentaryUseCase = updateCommentaryUseCase;
-        this.objectMapper = objectMapper;
+        this.handleEventUseCase = handleEventUseCase;
         this.eventSender = eventSender;
     }
 
@@ -48,21 +44,7 @@ public class CommentaryController implements CommentaryResource{
 
     @Override
     public ResponseEntity<Void> eventHandler(Event event) {
-        try {
-            Class<?> clazz = Class.forName(event.getClassName());
-            Object object = objectMapper.convertValue(event.getObject(), clazz);
-            if (object instanceof CommentVerifiedDto commentVerifiedDto) {
-                if(!commentVerifiedDto.isValid()){
-                    updateCommentaryUseCase.execute(new UpdateCommentaryUseCase.Input(commentVerifiedDto.getId(),
-                            commentVerifiedDto.getContent(),
-                            commentVerifiedDto.getPostId(),
-                            commentVerifiedDto.isValid()));
-                }
-            }
-        }
-        catch(ClassNotFoundException e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        handleEventUseCase.execute(new HandleEventUseCase.Input(event));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

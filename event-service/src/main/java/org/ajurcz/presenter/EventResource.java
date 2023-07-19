@@ -1,11 +1,9 @@
 package org.ajurcz.presenter;
 
 import org.ajurcz.core.domain.Event;
+import org.ajurcz.presenter.response.GetFromEventStoreResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(EventResource.BASE_URL)
@@ -14,4 +12,8 @@ public interface EventResource {
 
     @PostMapping
     ResponseEntity<Void> createEvent(@RequestBody Event event);
+
+    @GetMapping
+    ResponseEntity<GetFromEventStoreResponse> getAllEvents();
+
 }
