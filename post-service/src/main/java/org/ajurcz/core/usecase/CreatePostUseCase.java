@@ -2,18 +2,12 @@ package org.ajurcz.core.usecase;
 
 import lombok.Value;
 import org.ajurcz.core.domain.Post;
-import org.ajurcz.core.domain.PostDto;
-import org.ajurcz.core.service.EventSender;
 import org.ajurcz.core.service.PostRepository;
 
 public class CreatePostUseCase extends UseCase<CreatePostUseCase.Input, CreatePostUseCase.Output>{
+    private final PostRepository postRepository;
 
-    private EventSender<PostDto> eventSender;
-
-    private PostRepository postRepository;
-
-    public CreatePostUseCase(EventSender<PostDto> eventSender, PostRepository postRepository) {
-        this.eventSender = eventSender;
+    public CreatePostUseCase(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
 
@@ -21,7 +15,6 @@ public class CreatePostUseCase extends UseCase<CreatePostUseCase.Input, CreatePo
     public Output execute(Input input) {
         Post post = postRepository.persistPost(input.creatorName, input.content);
 
-        eventSender.sendEvent(new PostDto(post.getId(), post.getCreatorName(), post.getContent()));
         return new Output(post);
     }
 
