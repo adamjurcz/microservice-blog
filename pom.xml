@@ -16,10 +16,10 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
+        <module>event-service</module>
         <module>commentary-service</module>
         <module>post-service</module>
         <module>query-service</module>
-        <module>event-service</module>
         <module>verify-comment-service</module>
     </modules>
 

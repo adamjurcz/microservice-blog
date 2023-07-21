@@ -5,7 +5,7 @@ import org.query.core.usecase.HandleEventUseCase;
 import org.event.presenter.response.GetFromEventStoreResponse;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Component;import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -35,7 +35,12 @@ public class StartupLoadLostEvents implements ApplicationListener<ContextRefresh
     }
 
     private GetFromEventStoreResponse getEventsFromEventListener(){
-        return restTemplate.getForObject("http://localhost:8083/api/v1/events",
-                GetFromEventStoreResponse.class);
+        try {
+            return restTemplate.getForObject("http://localhost:8083/api/v1/events",
+                    GetFromEventStoreResponse.class);
+        }
+        catch (ResourceAccessException exception){
+            return null;
+        }
     }
 }
