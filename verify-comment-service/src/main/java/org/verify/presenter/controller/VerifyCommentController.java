@@ -1,9 +1,9 @@
 package org.verify.presenter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.event.core.domain.CommentDto;
-import org.event.core.domain.CommentVerifiedDto;
-import org.event.core.domain.Event;
+import org.ajurcz.event.domain.CommentDto;
+import org.ajurcz.event.domain.CommentVerifiedDto;
+import org.ajurcz.event.domain.Event;
 
 import org.verify.core.service.EventSender;
 import org.verify.core.usecase.VerifyCommentUseCase;

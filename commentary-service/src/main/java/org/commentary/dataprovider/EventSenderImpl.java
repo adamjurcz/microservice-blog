@@ -1,6 +1,6 @@
 package org.commentary.dataprovider;
 
-import org.event.core.domain.Event;
+import org.ajurcz.event.domain.Event;
 import org.commentary.core.service.EventSender;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;

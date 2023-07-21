@@ -2,8 +2,8 @@ package org.commentary.core.usecase;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Value;
-import org.event.core.domain.CommentVerifiedDto;
-import org.event.core.domain.Event;
+import org.ajurcz.event.domain.Event;
+import org.ajurcz.event.domain.CommentVerifiedDto;
 
 public class HandleEventUseCase extends UseCase<HandleEventUseCase.Input, HandleEventUseCase.Output>{
 

@@ -1,8 +1,8 @@
 package org.query.configuration;
 
-import org.event.core.domain.Event;
+import org.ajurcz.event.domain.Event;
 import org.query.core.usecase.HandleEventUseCase;
-import org.event.presenter.response.GetFromEventStoreResponse;
+import org.ajurcz.event.response.GetFromEventStoreResponse;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;import org.springframework.web.client.ResourceAccessException;

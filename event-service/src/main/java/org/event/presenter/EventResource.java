@@ -1,7 +1,7 @@
 package org.event.presenter;
 
-import org.event.core.domain.Event;
-import org.event.presenter.response.GetFromEventStoreResponse;
+import org.ajurcz.event.domain.Event;
+import org.ajurcz.event.response.GetFromEventStoreResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

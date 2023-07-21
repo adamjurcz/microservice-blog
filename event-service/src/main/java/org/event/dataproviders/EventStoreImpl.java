@@ -1,6 +1,6 @@
 package org.event.dataproviders;
 
-import org.event.core.domain.Event;
+import org.ajurcz.event.domain.Event;
 import org.event.core.service.EventStore;
 import org.springframework.stereotype.Repository;
 

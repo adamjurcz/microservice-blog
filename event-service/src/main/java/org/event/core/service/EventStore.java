@@ -1,6 +1,6 @@
 package org.event.core.service;
 
-import org.event.core.domain.Event;
+import org.ajurcz.event.domain.Event;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package org.event.core.usecase;
 
 import lombok.Value;
-import org.event.core.domain.Event;
+import org.ajurcz.event.domain.Event;
 import org.event.core.service.EventStore;
 
 public class AddToEventStoreUseCase extends UseCase<AddToEventStoreUseCase.Input, AddToEventStoreUseCase.Output>{

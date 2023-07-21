@@ -1,6 +1,6 @@
 package org.commentary.presenter.controller;
 
-import org.event.core.domain.Event;
+import org.ajurcz.event.domain.Event;
 import org.commentary.presenter.requests.CommentaryRequest;
 import org.commentary.presenter.responses.CommentaryCreateResponse;
 import org.springframework.http.ResponseEntity;

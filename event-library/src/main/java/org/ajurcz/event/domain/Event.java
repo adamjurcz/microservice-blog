@@ -1,4 +1,4 @@
-package org.event.core.domain;
+package org.ajurcz.event.domain;
 
 public class Event {
     public String className;

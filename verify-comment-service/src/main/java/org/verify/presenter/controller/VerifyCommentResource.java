@@ -1,6 +1,6 @@
 package org.verify.presenter.controller;
 
-import org.event.core.domain.Event;
+import org.ajurcz.event.domain.Event;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

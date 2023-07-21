@@ -1,12 +1,12 @@
 package org.event.presenter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.event.core.domain.CommentDto;
-import org.event.core.domain.CommentVerifiedDto;
-import org.event.core.domain.Event;
+import org.ajurcz.event.domain.CommentDto;
+import org.ajurcz.event.domain.CommentVerifiedDto;
+import org.ajurcz.event.domain.Event;
 import org.event.core.usecase.AddToEventStoreUseCase;
 import org.event.core.usecase.GetEventsFromEventStoreUseCase;
-import org.event.presenter.response.GetFromEventStoreResponse;
+import org.ajurcz.event.response.GetFromEventStoreResponse;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;

@@ -40,7 +40,7 @@
         </dependency>
         <dependency>
             <groupId>org.ajurcz</groupId>
-            <artifactId>event-service</artifactId>
+            <artifactId>event-library</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

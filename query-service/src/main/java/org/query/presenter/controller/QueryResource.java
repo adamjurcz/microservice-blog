@@ -1,6 +1,6 @@
 package org.query.presenter.controller;
 
-import org.event.core.domain.Event;
+import org.ajurcz.event.domain.Event;
 import org.query.presenter.response.PostGetAllResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

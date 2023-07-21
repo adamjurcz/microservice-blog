@@ -4,7 +4,7 @@ import org.query.core.domain.Post;
 import org.query.core.usecase.GetAllPostsUseCase;
 import org.query.core.usecase.HandleEventUseCase;
 import org.query.presenter.response.PostGetAllResponse;
-import org.event.core.domain.Event;
+import org.ajurcz.event.domain.Event;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

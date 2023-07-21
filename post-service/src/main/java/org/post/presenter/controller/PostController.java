@@ -2,7 +2,7 @@ package org.post.presenter.controller;
 
 import org.post.core.domain.Post;
 
-import org.event.core.domain.PostDto;
+import org.ajurcz.event.domain.PostDto;
 import org.post.core.service.EventSender;
 import org.post.core.usecase.CreatePostUseCase;
 import org.post.presenter.requests.PostRequest;

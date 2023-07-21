@@ -1,6 +1,6 @@
 package org.verify.dataprovider;
 
-import org.event.core.domain.Event;
+import org.ajurcz.event.domain.Event;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.verify.core.service.EventSender;

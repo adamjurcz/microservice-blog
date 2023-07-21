@@ -1,7 +1,7 @@
 package org.commentary.presenter.controller;
 
-import org.event.core.domain.CommentDto;
-import org.event.core.domain.Event;
+import org.ajurcz.event.domain.CommentDto;
+import org.ajurcz.event.domain.Event;
 import org.commentary.core.domain.Commentary;
 import org.commentary.core.service.EventSender;
 import org.commentary.core.usecase.CreateCommentaryUseCase;
