@@ -12,6 +12,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -59,7 +60,7 @@ public class EventController implements EventResource{
                 restTemplate.exchange("http://localhost:8084/api/v1/queries", HttpMethod.POST, request, Void.class);
             }
         }
-        catch (ClassNotFoundException e){
+        catch (ClassNotFoundException | ResourceAccessException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(HttpStatus.OK);
