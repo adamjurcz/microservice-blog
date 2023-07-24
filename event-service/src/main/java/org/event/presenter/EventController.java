@@ -7,6 +7,7 @@ import org.ajurcz.event.domain.Event;
 import org.event.core.usecase.AddToEventStoreUseCase;
 import org.event.core.usecase.GetEventsFromEventStoreUseCase;
 import org.ajurcz.event.response.GetFromEventStoreResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,15 @@ import java.util.List;
 
 @Component
 public class EventController implements EventResource{
+
+    @Value("${verifycomment.url}")
+    private String verifyCommentUrl;
+
+    @Value("${queries.url}")
+    private String queriesUrl;
+
+    @Value("${commentary.url}")
+    private String commentaryUrl;
 
     private final RestTemplate restTemplate;
 
@@ -46,18 +56,18 @@ public class EventController implements EventResource{
             Class<?> clazz = Class.forName(event.getClassName());
             Object object = objectMapper.convertValue(event.getObject(), clazz);
             if (object instanceof CommentDto) {
-                restTemplate.exchange("http://localhost:8085/api/v1/verifycomments", HttpMethod.POST, request, Void.class);
+                restTemplate.exchange(verifyCommentUrl, HttpMethod.POST, request, Void.class);
             }
             else if (object instanceof CommentVerifiedDto commentVerifiedDto){
                 if(commentVerifiedDto.isValid()) {
-                    restTemplate.exchange("http://localhost:8084/api/v1/queries", HttpMethod.POST, request, Void.class);
+                    restTemplate.exchange(queriesUrl, HttpMethod.POST, request, Void.class);
                 }
                 else{
-                    restTemplate.exchange("http://localhost:8082/api/v1/commentary", HttpMethod.POST, request, Void.class);
+                    restTemplate.exchange(commentaryUrl, HttpMethod.POST, request, Void.class);
                 }
             }
             else{
-                restTemplate.exchange("http://localhost:8084/api/v1/queries", HttpMethod.POST, request, Void.class);
+                restTemplate.exchange(queriesUrl, HttpMethod.POST, request, Void.class);
             }
         }
         catch (ClassNotFoundException | ResourceAccessException e){

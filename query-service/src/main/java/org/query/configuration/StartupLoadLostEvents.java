@@ -3,6 +3,7 @@ package org.query.configuration;
 import org.ajurcz.event.domain.Event;
 import org.query.core.usecase.HandleEventUseCase;
 import org.ajurcz.event.response.GetFromEventStoreResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;import org.springframework.web.client.ResourceAccessException;
@@ -12,6 +13,10 @@ import java.util.List;
 
 @Component
 public class StartupLoadLostEvents implements ApplicationListener<ContextRefreshedEvent> {
+
+    @Value("${event.url}")
+    private String eventUrl;
+
     private final RestTemplate restTemplate;
 
     private final HandleEventUseCase handleEventUseCase;
@@ -36,11 +41,11 @@ public class StartupLoadLostEvents implements ApplicationListener<ContextRefresh
 
     private GetFromEventStoreResponse getEventsFromEventListener(){
         try {
-            return restTemplate.getForObject("http://localhost:8083/api/v1/events",
+            return restTemplate.getForObject(eventUrl,
                     GetFromEventStoreResponse.class);
         }
         catch (ResourceAccessException exception){
-            return null;
+            return null; //TODO
         }
     }
 }

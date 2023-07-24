@@ -2,6 +2,7 @@ package org.commentary.dataprovider;
 
 import org.ajurcz.event.domain.Event;
 import org.commentary.core.service.EventSender;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 
@@ -11,6 +12,9 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 public class EventSenderImpl <T> implements EventSender <T> {
+    @Value("${event.url}")
+    private String eventUrl;
+
     private final RestTemplate restTemplate;
 
     public EventSenderImpl(RestTemplate restTemplate) {
@@ -21,13 +25,13 @@ public class EventSenderImpl <T> implements EventSender <T> {
     public void sendEvent(T dto) {
         Event event = new Event(dto.getClass().getName(), dto);
         HttpEntity<Event> request = new HttpEntity<>(event);
-        String orchestratorUrl = "http://localhost:8083/api/v1/events";
+        String orchestratorUrl = eventUrl;
         try {
             restTemplate
                     .exchange(orchestratorUrl, HttpMethod.POST, request, Void.class);
         }
         catch (ResourceAccessException exception){
-            exception.printStackTrace();
+            //TODO
         }
     }
 }
