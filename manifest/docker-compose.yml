@@ -2,35 +2,35 @@ version: '3'
 services:
   commentary-service:
     build:
-      context: ./commentary-service
+      context: ../commentary-service
       dockerfile: dockerfile
     ports:
       - 8082:8082
 
   event-service:
     build:
-      context: ./event-service
+      context: ../event-service
       dockerfile: dockerfile
     ports:
       - 8083:8083
     
   post-service:
     build:
-      context: ./post-service
+      context: ../post-service
       dockerfile: dockerfile
     ports:
       - 8081:8081
     
   query-service:
     build:
-      context: ./query-service
+      context: ../query-service
       dockerfile: dockerfile
     ports:
       - 8084:8084
 
   verify-comment-service:
     build:
-      context: ./verify-comment-service
+      context: ../verify-comment-service
       dockerfile: dockerfile
     ports:
       - 8085:8085
