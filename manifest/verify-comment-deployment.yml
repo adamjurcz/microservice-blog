@@ -15,7 +15,7 @@ spec:
         app: verify-comment
     spec:
       containers:
-      - name: verify-comment-service
+      - name: verify-comment-pod
         image: adamjurcz/verify-comment-service:latest
         ports:
         - containerPort: 8085
@@ -30,4 +30,3 @@ spec:
   ports:
     - protocol: TCP
       port: 8085
-      targetPort: 8085

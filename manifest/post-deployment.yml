@@ -15,7 +15,7 @@ spec:
         app: post
     spec:
       containers:
-      - name: post-service
+      - name: post-pod
         image: adamjurcz/post-service:latest
         ports:
         - containerPort: 8081
@@ -25,11 +25,9 @@ kind: Service
 metadata:
   name: post-service
 spec:
-  type: NodePort
   selector:
     app: post
   ports:
     - protocol: TCP
       port: 8081
       targetPort: 8081
-      nodePort: 30101
