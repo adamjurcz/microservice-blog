@@ -1,0 +1,34 @@
+apiVersion: skaffold/v4beta6
+kind: Config
+metadata:
+  name: microservice-blog
+build:
+  artifacts:
+    - image: adamjurcz/commentary-service
+      context: commentary-service
+      docker:
+        dockerfile: dockerfile
+    - image: adamjurcz/event-service
+      context: event-service
+      docker:
+        dockerfile: dockerfile
+    - image: adamjurcz/post-service
+      context: post-service
+      docker:
+        dockerfile: dockerfile
+    - image: adamjurcz/query-service
+      context: query-service
+      docker:
+        dockerfile: dockerfile
+    - image: adamjurcz/verify-comment-service
+      context: verify-comment-service
+      docker:
+        dockerfile: dockerfile
+manifests:
+  rawYaml:
+    - manifest/commentary-deployment.yml
+    - manifest/event-deployment.yml
+    - manifest/microservices-ingress.yml
+    - manifest/post-deployment.yml
+    - manifest/query-deployment.yml
+    - manifest/verify-comment-deployment.yml
