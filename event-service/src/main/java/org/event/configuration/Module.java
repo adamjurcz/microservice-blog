@@ -17,4 +17,5 @@ public class Module {
     public GetEventsFromEventStoreUseCase getEventsFromEventStoreUseCase(EventStore eventStore){
         return new GetEventsFromEventStoreUseCase(eventStore);
     }
+
 }

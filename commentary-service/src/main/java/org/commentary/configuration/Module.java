@@ -25,5 +25,4 @@ public class Module {
     public HandleEventUseCase handleEventUseCase(ObjectMapper objectMapper, UpdateCommentaryUseCase updateCommentaryUseCase){
         return new HandleEventUseCase(objectMapper, updateCommentaryUseCase);
     }
-
 }
