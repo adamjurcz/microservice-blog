@@ -24,11 +24,16 @@ build:
       context: verify-comment-service
       docker:
         dockerfile: dockerfile
+    - image: adamjurcz/frontend
+      context: ../microservice-blog-frontend
+      docker:
+        dockerfile: dockerfile
 manifests:
   rawYaml:
     - manifest/commentary-deployment.yml
     - manifest/event-deployment.yml
-    - manifest/microservices-ingress.yml
     - manifest/post-deployment.yml
     - manifest/query-deployment.yml
     - manifest/verify-comment-deployment.yml
+    - manifest/frontend-deployment.yml
+    - manifest/frontend-ingress.yml
