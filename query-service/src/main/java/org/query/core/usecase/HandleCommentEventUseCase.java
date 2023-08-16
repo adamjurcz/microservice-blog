@@ -2,11 +2,8 @@ package org.query.core.usecase;
 
 import lombok.Value;
 import org.query.core.domain.Commentary;
-import org.query.core.domain.Post;
 import org.query.core.service.PostRepository;
 
-
-import java.util.Optional;
 
 public class HandleCommentEventUseCase extends UseCase<HandleCommentEventUseCase.Input, HandleCommentEventUseCase.Output> {
 
@@ -18,9 +15,8 @@ public class HandleCommentEventUseCase extends UseCase<HandleCommentEventUseCase
 
     @Override
     public Output execute(Input input) {
-        Optional<Post> post = postRepository.getPost(input.postId);
-        post.ifPresent(value -> value.addCommentary(new Commentary(input.id, input.content, input.postId, input.isValid)));
-
+        Commentary commentary = new Commentary(input.id, input.content, input.postId, input.isValid);
+        postRepository.addCommentToPost(commentary);
         return new Output();
     }
 

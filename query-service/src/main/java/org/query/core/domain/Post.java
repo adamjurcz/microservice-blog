@@ -29,8 +29,4 @@ public class Post{
     }
 
     public List<Commentary> getCommentaries(){return commentaries;}
-
-    public void addCommentary(Commentary commentary){
-        commentaries.add(commentary);
-    }
 }

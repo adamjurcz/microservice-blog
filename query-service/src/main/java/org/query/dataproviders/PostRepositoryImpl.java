@@ -1,33 +1,45 @@
 package org.query.dataproviders;
 
+import org.query.core.domain.Commentary;
 import org.query.core.domain.Post;
 import org.query.core.service.PostRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class PostRepositoryImpl implements PostRepository {
-    private List<Post> posts;
+    private final MongoPostRepository mongoPostRepository;
 
-    public PostRepositoryImpl() {
-        this.posts = new ArrayList<>();
+    public PostRepositoryImpl(MongoPostRepository mongoPostRepository) {
+        this.mongoPostRepository = mongoPostRepository;
     }
 
     @Override
     public void savePost(Integer id, String creatorName, String content) {
-        posts.add(new Post(id, creatorName, content));
+        PostData postData = new PostData(id, creatorName, content);
+        mongoPostRepository.save(postData);
+    }
+
+    @Override
+    public void addCommentToPost(Commentary commentary) {
+        Optional<PostData> postDataOptional = mongoPostRepository.findById(commentary.getPostId());
+        if(postDataOptional.isPresent()){
+            PostData postData = postDataOptional.get();
+            postData.getCommentaries().add(new CommentaryData(commentary.getId(),
+                    commentary.getContent(), commentary.getPostId(), commentary.isValid()));
+            mongoPostRepository.save(postData);
+        }
     }
 
     @Override
     public Optional<Post> getPost(Integer id) {
-        return posts.stream().filter(post_ -> post_.getId().equals(id)).findFirst();
+        return mongoPostRepository.findById(id).map(PostData::fromThis);
     }
 
     @Override
     public List<Post> getAllPosts() {
-        return posts;
+        return mongoPostRepository.findAll().stream().map(PostData::fromThis).toList();
     }
 }
