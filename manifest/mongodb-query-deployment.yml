@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-deployment
+spec:
+  selector:
+    matchLabels:
+      app: mongodb-query
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: mongodb-query
+    spec:
+      containers:
+        -
+          name: mongodb-query
+          image: mongo:5.0
+          imagePullPolicy: Always
+          env:
+            -
+              name: MONGO_INITDB_ROOT_USERNAME
+              value: root_user
+            -
+              name: MONGO_INITDB_ROOT_PASSWORD
+              value: password123
+          ports:
+            -
+              containerPort: 27017
+              name: mongodb
+          volumeMounts:
+            -
+              name: mongodb-persistent-storage
+              mountPath: /data/db
+      volumes:
+        -
+          name: mongodb-persistent-storage
+          persistentVolumeClaim:
+            claimName: mongodb-query-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-query-service
+spec:
+  selector:
+    app: mongodb-query
+  ports:
+    - 
+      name: mongodb
+      port: 27017
