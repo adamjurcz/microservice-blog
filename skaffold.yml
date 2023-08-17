@@ -33,6 +33,9 @@ manifests:
     - manifest/init/mongodb-query-pv.yml
     - manifest/init/mongodb-query-pvc.yml
     - manifest/init/mongodb-query-deployment.yml
+    - manifest/init/postgres-post-pv.yml
+    - manifest/init/postgres-post-pvc.yml
+    - manifest/init/postgres-post-deployment.yml
     - manifest/commentary-deployment.yml
     - manifest/event-deployment.yml
     - manifest/post-deployment.yml
