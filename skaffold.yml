@@ -30,9 +30,9 @@ build:
         dockerfile: dockerfile
 manifests:
   rawYaml:
-    - manifest/mongodb-query-pv.yml
-    - manifest/mongodb-query-pvc.yml
-    - manifest/mongodb-query-deployment.yml
+    - manifest/init/mongodb-query-pv.yml
+    - manifest/init/mongodb-query-pvc.yml
+    - manifest/init/mongodb-query-deployment.yml
     - manifest/commentary-deployment.yml
     - manifest/event-deployment.yml
     - manifest/post-deployment.yml
