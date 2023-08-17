@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS PostData;
+CREATE TABLE PostData(id serial PRIMARY KEY, creatorName VARCHAR(60), content VARCHAR(255));
