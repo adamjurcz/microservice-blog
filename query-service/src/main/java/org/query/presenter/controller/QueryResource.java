@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.*;
 public interface QueryResource {
     String BASE_URL = "/api/v1/queries";
 
-    @PostMapping
-    ResponseEntity<Void> eventHandler(@RequestBody Event event);
-
     @GetMapping("/posts")
     ResponseEntity<PostGetAllResponse> getAllPosts();
 }

@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.*;
 public interface EventResource {
     String BASE_URL = "/api/v1/events";
 
-    @PostMapping
-    ResponseEntity<Void> createEvent(@RequestBody Event event);
-
     @GetMapping
     ResponseEntity<GetFromEventStoreResponse> getAllEvents();
 

@@ -1,6 +1,5 @@
 package org.commentary.presenter.controller;
 
-import org.ajurcz.event.domain.Event;
 import org.commentary.presenter.requests.CommentaryRequest;
 import org.commentary.presenter.responses.CommentaryCreateResponse;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +14,4 @@ public interface CommentaryResource {
     ResponseEntity<CommentaryCreateResponse> createCommentary(@PathVariable Integer postId,
                                                               @RequestBody CommentaryRequest commentaryRequest);
 
-    @PostMapping
-    ResponseEntity<Void> eventHandler(@RequestBody Event event);
 }

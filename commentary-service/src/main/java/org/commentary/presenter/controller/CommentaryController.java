@@ -1,11 +1,9 @@
 package org.commentary.presenter.controller;
 
 import org.ajurcz.event.domain.CommentDto;
-import org.ajurcz.event.domain.Event;
 import org.commentary.core.domain.Commentary;
 import org.commentary.core.service.EventSender;
 import org.commentary.core.usecase.CreateCommentaryUseCase;
-import org.commentary.core.usecase.HandleEventUseCase;
 import org.commentary.presenter.requests.CommentaryRequest;
 import org.commentary.presenter.responses.CommentaryCreateResponse;
 import org.springframework.http.HttpStatus;
@@ -17,15 +15,12 @@ public class CommentaryController implements CommentaryResource{
 
     private final CreateCommentaryUseCase createCommentaryUseCase;
 
-    private final HandleEventUseCase handleEventUseCase;
 
     private final EventSender<CommentDto> eventSender;
 
     public CommentaryController(CreateCommentaryUseCase createCommentaryUseCase,
-                                HandleEventUseCase handleEventUseCase,
                                 EventSender<CommentDto>eventSender) {
         this.createCommentaryUseCase = createCommentaryUseCase;
-        this.handleEventUseCase = handleEventUseCase;
         this.eventSender = eventSender;
     }
 
@@ -40,11 +35,5 @@ public class CommentaryController implements CommentaryResource{
 
         return new ResponseEntity<>(new CommentaryCreateResponse(commentary.getId(),
                 commentary.getContent(), commentary.getPostId()), HttpStatus.CREATED);
-    }
-
-    @Override
-    public ResponseEntity<Void> eventHandler(Event event) {
-        handleEventUseCase.execute(new HandleEventUseCase.Input(event));
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
