@@ -14,6 +14,10 @@ spec:
       labels:
         app: event
     spec:
+      initContainers:
+      - name: wait-for-kafka
+        image: busybox:1.28
+        command: ['sh', '-c', 'until nslookup kafka-service; do echo waiting for kafka; sleep 2; done;']
       containers:
       - name: event-pod
         image: adamjurcz/event-service:latest
