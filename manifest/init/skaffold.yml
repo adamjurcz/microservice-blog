@@ -1,0 +1,9 @@
+apiVersion: skaffold/v4beta6
+kind: Config
+metadata:
+  name: costam-costam
+manifests:
+  rawYaml:
+    - zookeeper-deployment.yml
+    - kafka-deployment.yml
+
