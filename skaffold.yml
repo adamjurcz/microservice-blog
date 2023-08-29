@@ -36,8 +36,8 @@ manifests:
     - manifest/init/postgres-post-pv.yml
     - manifest/init/postgres-post-pvc.yml
     - manifest/init/postgres-post-deployment.yml
-    - manifest/commentary-deployment.yml
     - manifest/event-deployment.yml
+    - manifest/commentary-deployment.yml
     - manifest/post-deployment.yml
     - manifest/query-deployment.yml
     - manifest/verify-comment-deployment.yml

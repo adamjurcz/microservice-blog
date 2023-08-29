@@ -1,6 +1,6 @@
 package org.ajurcz.event.domain;
 
-public class CommentDto {
+public class CommentDto implements Event {
     private Integer id;
     private String content;
     private Integer postId;
@@ -12,6 +12,11 @@ public class CommentDto {
     }
 
     public CommentDto() {
+    }
+
+    @Override
+    public void accept(EventVisitor eventVisitor) {
+        eventVisitor.visitCommentDto(this);
     }
 
     public Integer getId() {
@@ -37,5 +42,4 @@ public class CommentDto {
     public void setPostId(Integer postId) {
         this.postId = postId;
     }
-
 }

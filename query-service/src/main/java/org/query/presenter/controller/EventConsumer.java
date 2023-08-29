@@ -5,6 +5,6 @@ import org.ajurcz.event.domain.Event;
 import org.springframework.kafka.annotation.KafkaListener;
 
 public interface EventConsumer {
-    @KafkaListener(topics = "validated_events_topic", groupId = "query-consumer")
+    @KafkaListener(topics = "${newValidatedEvent.consumer.topic}", groupId = "query-event-consumer")
     void eventListener(Event event);
 }

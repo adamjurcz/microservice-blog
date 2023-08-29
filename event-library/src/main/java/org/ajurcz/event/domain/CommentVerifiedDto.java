@@ -1,6 +1,6 @@
 package org.ajurcz.event.domain;
 
-public class CommentVerifiedDto {
+public class CommentVerifiedDto implements Event {
     private Integer id;
     private String content;
     private Integer postId;
@@ -11,6 +11,11 @@ public class CommentVerifiedDto {
         this.content = content;
         this.postId = postId;
         this.isValid = isValid;
+    }
+
+    @Override
+    public void accept(EventVisitor eventVisitor) {
+        eventVisitor.visitCommentVerifiedDto(this);
     }
 
     public CommentVerifiedDto() {

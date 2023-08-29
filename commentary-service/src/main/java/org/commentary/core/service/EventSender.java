@@ -1,5 +1,8 @@
 package org.commentary.core.service;
 
-public interface EventSender <T> {
-    void sendEvent(T dto);
+
+import org.ajurcz.event.domain.Event;
+
+public interface EventSender {
+    void sendToTopic(Event event, String topicName);
 }

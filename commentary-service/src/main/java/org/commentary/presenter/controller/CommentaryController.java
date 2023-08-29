@@ -6,6 +6,7 @@ import org.commentary.core.service.EventSender;
 import org.commentary.core.usecase.CreateCommentaryUseCase;
 import org.commentary.presenter.requests.CommentaryRequest;
 import org.commentary.presenter.responses.CommentaryCreateResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -13,13 +14,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class CommentaryController implements CommentaryResource{
 
+    @Value("${newCommentary.production.topic}")
+    private String commentaryProductionTopicName;
     private final CreateCommentaryUseCase createCommentaryUseCase;
-
-
-    private final EventSender<CommentDto> eventSender;
+    private final EventSender eventSender;
 
     public CommentaryController(CreateCommentaryUseCase createCommentaryUseCase,
-                                EventSender<CommentDto>eventSender) {
+                                EventSender eventSender) {
         this.createCommentaryUseCase = createCommentaryUseCase;
         this.eventSender = eventSender;
     }
@@ -31,7 +32,9 @@ public class CommentaryController implements CommentaryResource{
                 .execute(new CreateCommentaryUseCase.Input(commentaryRequest.content(), postId, isValid))
                 .getCommentary();
 
-        eventSender.sendEvent(new CommentDto(commentary.getId(), commentary.getContent(), commentary.getPostId()));
+        CommentDto commentDto = new CommentDto(commentary.getId(), commentary.getContent(), commentary.getPostId());
+
+        eventSender.sendToTopic(commentDto, commentaryProductionTopicName);
 
         return new ResponseEntity<>(new CommentaryCreateResponse(commentary.getId(),
                 commentary.getContent(), commentary.getPostId()), HttpStatus.CREATED);

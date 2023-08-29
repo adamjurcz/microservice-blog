@@ -1,66 +1,54 @@
 package org.event.presenter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.ajurcz.event.domain.CommentDto;
 import org.ajurcz.event.domain.CommentVerifiedDto;
-import org.ajurcz.event.domain.Event;
+import org.ajurcz.event.domain.PostDto;
+import org.event.core.service.EventSender;
 import org.event.core.usecase.AddToEventStoreUseCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.ResourceAccessException;
 
 @Component
 public class EventConsumerImpl implements EventConsumer{
-    Logger logger = LoggerFactory.getLogger(EventConsumerImpl.class);
+    @Value("${newPost.producer.topic}")
+    private String newPostsProducerTopicName;
+    @Value("${badCommentary.producer.topic}")
+    private String badCommentsProducerTopicName;
+    @Value("${validCommentary.producer.topic}")
+    private String validCommentsProducerTopicName;
+    @Value("${commentToVerify.producer.topic}")
+    private String toVerifyCommentsProducerTopicName;
 
     private final AddToEventStoreUseCase addToEventStoreUseCase;
 
-    private final ObjectMapper objectMapper;
+    private final EventSender eventSender;
 
-    private final KafkaTemplate<String, Event> kafkaTemplate;
-
-    public EventConsumerImpl(AddToEventStoreUseCase addToEventStoreUseCase, ObjectMapper objectMapper, KafkaTemplate<String, Event> kafkaTemplate) {
+    public EventConsumerImpl(AddToEventStoreUseCase addToEventStoreUseCase, EventSender eventSender) {
         this.addToEventStoreUseCase = addToEventStoreUseCase;
-        this.objectMapper = objectMapper;
-        this.kafkaTemplate = kafkaTemplate;
+        this.eventSender = eventSender;
     }
 
     @Override
-    public void eventListener(Event event) {
-        String commentNotVerifiedTopic = "comment_not_verified_topic";
-        String badCommentsTopic = "bad_comments_topic";
-        String validTopic = "validated_events_topic";
+    public void newCommentsListener(CommentDto commentDto) {
+        eventSender.sendToTopic(commentDto, toVerifyCommentsProducerTopicName);
+    }
 
-        logger.info("dostalismy event");
+    @Override
+    public void newPostsListener(PostDto postDto) {
+        addToEventStoreUseCase.execute(new AddToEventStoreUseCase.Input(postDto));
+        eventSender.sendToTopic(postDto, newPostsProducerTopicName);
+    }
 
-        addToEventStoreUseCase.execute(new AddToEventStoreUseCase.Input(event));
-        try {
-            Class<?> clazz = Class.forName(event.getClassName());
-            Object object = objectMapper.convertValue(event.getObject(), clazz);
-            if (object instanceof CommentDto) {
-                logger.info("przekierowujemy komentarz na verify");
-                kafkaTemplate.send(commentNotVerifiedTopic, event);
-            }
-            else if (object instanceof CommentVerifiedDto commentVerifiedDto){
-                if(commentVerifiedDto.isValid()) {
-                    logger.info("przekierowujemy commentverified na queries");
-                    kafkaTemplate.send(validTopic, event);
-                }
-                else{
-                    logger.info("przekierowujemy badcomment na commentaries");
-                    kafkaTemplate.send(badCommentsTopic, event);
-                }
-            }
-            else{
-                logger.info("przekierowujemy post do queries");
-                kafkaTemplate.send(validTopic, event);
-            }
+    @Override
+    public void newVerifiedCommentaryListener(CommentVerifiedDto commentVerifiedDto) {
+        if(commentVerifiedDto.isValid()){
+            addToEventStoreUseCase.execute(new AddToEventStoreUseCase.Input(commentVerifiedDto));
+            eventSender.sendToTopic(commentVerifiedDto, validCommentsProducerTopicName);
         }
-        catch (ClassNotFoundException | ResourceAccessException e){
-            ///TODO
+        else {
+            eventSender.sendToTopic(commentVerifiedDto, toVerifyCommentsProducerTopicName);
         }
-
     }
 }

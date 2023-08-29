@@ -1,8 +1,7 @@
-package org.commentary.dataprovider;
+package org.event.dataproviders;
 
 import org.ajurcz.event.domain.Event;
-import org.commentary.core.service.EventSender;
-
+import org.event.core.service.EventSender;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 

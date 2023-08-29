@@ -8,17 +8,21 @@ import org.post.core.usecase.CreatePostUseCase;
 import org.post.presenter.requests.PostRequest;
 import org.post.presenter.responses.PostCreateResponse;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PostController implements PostResource{
+    @Value("${newPost.producer.topic}")
+    private String newPostsProducerTopicName;
+
     private final CreatePostUseCase createPostUseCase;
 
-    private final EventSender<PostDto> eventSender;
+    private final EventSender eventSender;
 
-    public PostController(CreatePostUseCase createPostUseCase, EventSender<PostDto> eventSender) {
+    public PostController(CreatePostUseCase createPostUseCase, EventSender eventSender) {
         this.createPostUseCase = createPostUseCase;
         this.eventSender = eventSender;
     }
@@ -29,7 +33,8 @@ public class PostController implements PostResource{
                 .execute(new CreatePostUseCase.Input(postRequest.creatorName(), postRequest.content()))
                 .getPost();
 
-        eventSender.sendEvent(new PostDto(post.getId(), post.getCreatorName(), post.getContent()));
+        PostDto postDto = new PostDto(post.getId(), post.getCreatorName(), post.getContent());
+        eventSender.sendToTopic(postDto, newPostsProducerTopicName);
 
         return new ResponseEntity<>(
                 new PostCreateResponse(post.getId(), post.getCreatorName(), post.getContent()),

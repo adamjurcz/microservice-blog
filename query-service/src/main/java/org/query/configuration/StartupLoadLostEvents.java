@@ -1,7 +1,7 @@
 package org.query.configuration;
 
 import org.ajurcz.event.domain.Event;
-import org.query.core.usecase.HandleEventUseCase;
+import org.ajurcz.event.domain.EventVisitor;
 import org.ajurcz.event.response.GetFromEventStoreResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
@@ -19,11 +19,11 @@ public class StartupLoadLostEvents implements ApplicationListener<ContextRefresh
 
     private final RestTemplate restTemplate;
 
-    private final HandleEventUseCase handleEventUseCase;
+    private final EventVisitor eventVisitor;
 
-    public StartupLoadLostEvents(RestTemplate restTemplate, HandleEventUseCase handleEventUseCase) {
+    public StartupLoadLostEvents(RestTemplate restTemplate, EventVisitor eventVisitor) {
         this.restTemplate = restTemplate;
-        this.handleEventUseCase = handleEventUseCase;
+        this.eventVisitor = eventVisitor;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class StartupLoadLostEvents implements ApplicationListener<ContextRefresh
 
         List<Event> events = eventStoreResponse.events();
         for(Event event_ : events){
-            handleEventUseCase.execute(new HandleEventUseCase.Input(event_));
+            event_.accept(eventVisitor);
         }
     }
 
@@ -45,7 +45,7 @@ public class StartupLoadLostEvents implements ApplicationListener<ContextRefresh
                     GetFromEventStoreResponse.class);
         }
         catch (ResourceAccessException exception){
-            return null; //TODO
+            return null;
         }
     }
 }

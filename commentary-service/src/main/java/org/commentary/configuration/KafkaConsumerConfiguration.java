@@ -1,6 +1,5 @@
 package org.commentary.configuration;
 
-import org.ajurcz.event.deserializers.EventDeserializer;
 import org.ajurcz.event.domain.Event;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;

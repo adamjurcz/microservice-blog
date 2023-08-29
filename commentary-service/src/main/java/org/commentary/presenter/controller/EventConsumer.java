@@ -1,9 +1,10 @@
 package org.commentary.presenter.controller;
 
-import org.ajurcz.event.domain.Event;
+import org.ajurcz.event.domain.CommentVerifiedDto;
 import org.springframework.kafka.annotation.KafkaListener;
 
 public interface EventConsumer {
-    @KafkaListener(topics = "bad_comments_topic", groupId = "comment-consumer")
-    void badCommentsListener(Event event);
+
+    @KafkaListener(topics = "${badCommentary.consumer.topic}", groupId = "comment-commentDto-consumer")
+    void badCommentsListener(CommentVerifiedDto commentVerifiedDto);
 }

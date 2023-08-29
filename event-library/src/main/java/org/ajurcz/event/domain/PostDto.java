@@ -1,6 +1,6 @@
 package org.ajurcz.event.domain;
 
-public class PostDto {
+public class PostDto implements Event{
     private Integer id;
     private String creatorName;
     private String content;
@@ -12,6 +12,11 @@ public class PostDto {
         this.id = id;
         this.creatorName = creatorName;
         this.content = content;
+    }
+
+    @Override
+    public void accept(EventVisitor eventVisitor) {
+        eventVisitor.visitPostDto(this);
     }
 
     public Integer getId() {

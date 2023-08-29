@@ -1,19 +1,22 @@
 package org.commentary.presenter.controller;
 
-import org.ajurcz.event.domain.Event;
-import org.commentary.core.usecase.HandleEventUseCase;
+import org.ajurcz.event.domain.CommentVerifiedDto;
+import org.commentary.core.usecase.UpdateCommentaryUseCase;
 import org.springframework.stereotype.Component;
 
 @Component
 public class EventConsumerImpl implements EventConsumer{
-    private final HandleEventUseCase handleEventUseCase;
+    private final UpdateCommentaryUseCase updateCommentaryUseCase;
 
-    public EventConsumerImpl(HandleEventUseCase handleEventUseCase) {
-        this.handleEventUseCase = handleEventUseCase;
+    public EventConsumerImpl(UpdateCommentaryUseCase updateCommentaryUseCase) {
+        this.updateCommentaryUseCase = updateCommentaryUseCase;
     }
 
     @Override
-    public void badCommentsListener(Event event) {
-        handleEventUseCase.execute(new HandleEventUseCase.Input(event));
+    public void badCommentsListener(CommentVerifiedDto commentVerifiedDto) {
+        if(!commentVerifiedDto.isValid()){
+            updateCommentaryUseCase.execute(new UpdateCommentaryUseCase.Input(commentVerifiedDto.getId(), commentVerifiedDto.getContent(),
+                    commentVerifiedDto.getPostId(), commentVerifiedDto.isValid()));
+        }
     }
 }

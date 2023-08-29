@@ -1,4 +1,4 @@
-package org.verify.core.service;
+package org.event.core.service;
 
 import org.ajurcz.event.domain.Event;
 
