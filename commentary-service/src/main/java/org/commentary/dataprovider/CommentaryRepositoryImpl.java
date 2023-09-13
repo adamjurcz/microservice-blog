@@ -4,41 +4,35 @@ import org.commentary.core.domain.Commentary;
 import org.commentary.core.service.CommentaryRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
 @Repository
 public class CommentaryRepositoryImpl implements CommentaryRepository {
-    private List<Commentary> commentaries;
+    private final PostgresCommentaryRepository postgresCommentaryRepository;
 
-    public CommentaryRepositoryImpl() {
-        this.commentaries = new ArrayList<>();
+    public CommentaryRepositoryImpl(PostgresCommentaryRepository postgresCommentaryRepository) {
+        this.postgresCommentaryRepository = postgresCommentaryRepository;
     }
 
     @Override
     public Commentary persistComment(String content, Integer postId, boolean isValid) {
-        Integer newCommentaryId;
-        if(!commentaries.isEmpty()){
-            newCommentaryId = commentaries.stream().max(Comparator.comparing(Commentary::getId)).get().getId() + 1;
-        }
-        else{
-            newCommentaryId = 0;
-        }
-
-        Commentary commentary = new Commentary(newCommentaryId, content, postId, isValid);
-
-        commentaries.add(commentary);
-        return commentary;
+        CommentaryData commentaryData = new CommentaryData();
+        commentaryData.setContent(content);
+        commentaryData.setPostId(postId);
+        commentaryData.setValid(isValid);
+        return postgresCommentaryRepository
+                .save(commentaryData)
+                .fromThis();
     }
 
     @Override
-    public Commentary updateComment(Integer id, String content, Integer postId, boolean isValid){
-        commentaries.removeIf(object -> object.getId().equals(id));
+    public Commentary updateComment(Integer id, String content, Integer postId, boolean isValid) {
+        CommentaryData commentaryData = new CommentaryData();
+        commentaryData.setId(id);
+        commentaryData.setContent(content);
+        commentaryData.setPostId(postId);
+        commentaryData.setValid(isValid);
 
-        Commentary commentary = new Commentary(id, content, postId, isValid);
-        commentaries.add(commentary);
-        return commentary;
+        return postgresCommentaryRepository
+                .save(commentaryData)
+                .fromThis();
     }
-
 }
