@@ -5,7 +5,7 @@ metadata:
   labels:
     app: verify-comment
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: verify-comment

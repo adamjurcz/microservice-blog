@@ -5,7 +5,7 @@ metadata:
   labels:
     app: event
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: event
