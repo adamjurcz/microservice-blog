@@ -1,23 +1,18 @@
 package org.event.presenter;
 
 import org.ajurcz.event.domain.CommentDto;
-import org.ajurcz.event.domain.CommentVerifiedDto;
 import org.ajurcz.event.domain.PostDto;
 import org.event.core.service.EventSender;
 import org.event.core.usecase.AddToEventStoreUseCase;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 
 @Component
 public class EventConsumerImpl implements EventConsumer{
     @Value("${newPost.producer.topic}")
     private String newPostsProducerTopicName;
-    @Value("${badCommentary.producer.topic}")
-    private String badCommentsProducerTopicName;
-    @Value("${validCommentary.producer.topic}")
-    private String validCommentsProducerTopicName;
+
     @Value("${commentToVerify.producer.topic}")
     private String toVerifyCommentsProducerTopicName;
 
@@ -25,7 +20,8 @@ public class EventConsumerImpl implements EventConsumer{
 
     private final EventSender eventSender;
 
-    public EventConsumerImpl(AddToEventStoreUseCase addToEventStoreUseCase, EventSender eventSender) {
+    public EventConsumerImpl(AddToEventStoreUseCase addToEventStoreUseCase,
+                             EventSender eventSender) {
         this.addToEventStoreUseCase = addToEventStoreUseCase;
         this.eventSender = eventSender;
     }
@@ -41,14 +37,4 @@ public class EventConsumerImpl implements EventConsumer{
         eventSender.sendToTopic(postDto, newPostsProducerTopicName);
     }
 
-    @Override
-    public void newVerifiedCommentaryListener(CommentVerifiedDto commentVerifiedDto) {
-        if(commentVerifiedDto.isValid()){
-            addToEventStoreUseCase.execute(new AddToEventStoreUseCase.Input(commentVerifiedDto));
-            eventSender.sendToTopic(commentVerifiedDto, validCommentsProducerTopicName);
-        }
-        else {
-            eventSender.sendToTopic(commentVerifiedDto, toVerifyCommentsProducerTopicName);
-        }
-    }
 }
