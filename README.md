@@ -87,13 +87,11 @@ Describe: Customer can create commentary and persist it in postgres db, but when
 
 URL: /api/v1/commentary/{postId}
 
-Example curl: `curl --location 'http://adamjurczblog.com/api/v1/posts' \
+Example curl: `curl --location 'http://adamjurczblog.com/api/v1/commentary/1052' \
 --header 'Content-Type: application/json' \
 --data '{
-    "creatorName": "AdamJ",
-    "content": "Post numer 1 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, kurka quis nostrud"
-}
-'`
+    "content" : "Komentarz Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, Kuka quis nostrud"
+}'`
 
 Response header:
 - 200 OK
