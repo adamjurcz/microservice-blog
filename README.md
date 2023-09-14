@@ -125,12 +125,16 @@ By using ingress we can also use different services paths with only one host, bu
 
 <img width="800" alt="p1" src="https://github.com/adamjurcz/microservice-blog/assets/60117128/d0c58024-2e61-4af5-b8f4-e9af107ab50f">
 
+-------------------------------------------------------
+
 ### API deployments
 Our API is stateless, and because of that we are able to set multiple replicas for each one. We are using different number of replicas depending on the purpose of it.
 
 In deployments we have specified initContainers, where are checking for ability to communicate with kafka-service.
 
 Services connected with deployments are default ClusterIP kubernetes services, which gives use ability to communicate with other services internal in cluster.
+
+----------------------------------------------------------
 
 ### Stateful resources deployments
 In more advanced project deploying this part should be made more carefully with respect to all cases.  
@@ -140,5 +144,8 @@ statful deployments easier. It will take part of replication between different p
 In our case stateful resources are kafka, zookeeper, mongodb and postgres. In this projects all of these resources is normal deployment, because we are not using scaling nor more advanced features. We are persisting data on cluster by using Volume Claim mount path and host path. We can highlight important environment variable in kafka deployment `KAFKA_ADVERTISED_LISTENERS` values `INTERNAL://kafka-service:9092,EXTERNAL://localhost:9093` where kafka is listening for other agents (producers, consumers etc.) to connect into broker from outside this machine where broker is (like pod, or vm).
 
 ## Frontend
-I also made a simple implementation of frontend to this API in angular, which you can see [here](https://github.com/adamjurcz/microservice-blog-frontend).
+I also made a simple implementation of frontend to this API in Angular 16.1.6, which you can see [here](https://github.com/adamjurcz/microservice-blog-frontend).
+
+Example screen:
 ![ScreenFromApp](https://github.com/adamjurcz/microservice-blog/assets/60117128/6359ec61-1201-436d-b115-1cfb75731d54)
+----------------------------------
