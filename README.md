@@ -1,7 +1,7 @@
 # microservice-blog
 # Introduction
 Idea of this service is pretty simple, all what's it have to do is create commentaries, posts and give customer chance
-for read it later. We are also veryfing commentaries by some rules, ex. regex patterns. It's using microservices for 
+to read it later. We are also veryfing commentaries by some rules, ex. regex patterns. It's using microservices for 
 later ability to:
 - use kubernetes:
   - create independent instances of same service (replicas)
@@ -40,7 +40,7 @@ So you must:
 - apply manifest deployments
 - instead of two previous points you can use skaffold configuration for automatic build and deploy project, but firstly you must install skaffold and then you have to run 'skaffold dev' command from main folder
   - if topics are not avaible in kafka, you have to forward-ports to kafka and manually create topics which our app is using
-  - -> kubectl get pods -> copy kafka deployment name -> port forward for kafka and ports 9093:9093 ex. from host machine \
+  - -> kubectl get pods -> copy kafka deployment name -> port forward for kafka and ports 9093:9093 ex. from host machine -> create topics \
      `kafka-topics.sh --create --bootstrap-server localhost:[port-number] --replication-factor 1 --partitions 1 --topic [topic-name]`
   - topics in app: new_comments_topic, new_posts_topic, new_verified_comments_topic, validated_events_topic, bad_comments_topic, to_verify_comments_topic
 # Description
